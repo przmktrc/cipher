@@ -1,2 +1,2 @@
 # cipher
-A simple ciphering program
+A simple ciphering program.
