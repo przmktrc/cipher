@@ -1,10 +1,8 @@
+#include <fmt/core.h>
 #include <iostream>
 #include <string>
 #include <sys/types.h>
-#include <unicode/schriter.h>
-#include <unicode/unistr.h>
 
-#include "fmt/core.h"
 #include "icu.hpp"
 
 
