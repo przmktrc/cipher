@@ -1,5 +1,3 @@
-#include <stdexcept>
-
 #include "cli.hpp"
 #include "icu.hpp"
 #include "morse.hpp"
