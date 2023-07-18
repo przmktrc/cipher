@@ -2,6 +2,10 @@
 A simple ciphering program. **Supports Unicode characters**
 
 
+## antext
+`antext` is a simple command-line tool for analyzing text line-by-line char-by-char.
+
+
 ## Ciphers
 ### Morse code
 Used by adding `--from-morse` or `--to-morse` option. \
