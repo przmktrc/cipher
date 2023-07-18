@@ -2,12 +2,13 @@
 
 #pragma once
 
-#include "fmt/core.h"
-#include "unicode/coll.h"
-#include "unicode/schriter.h"
-#include "unicode/unistr.h"
-#include "unicode/ustream.h"
-
+#include <fmt/core.h>
+#include <unicode/coll.h>
+#include <unicode/schriter.h>
+#include <unicode/uchar.h>
+#include <unicode/umachine.h>
+#include <unicode/unistr.h>
+#include <unicode/ustream.h>
 
 
 using icu::UnicodeString;
