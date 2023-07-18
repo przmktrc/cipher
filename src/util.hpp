@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <vector>
 
+#include "config.hpp"
 #include "icu.hpp"
 
 
@@ -64,15 +65,6 @@ void for_each_split(UnicodeString const& str, UChar32 delim, auto&& func)
 
 namespace cipher::error
 {
-enum class HandlingMethod
-{
-    except,
-    report,
-    report_on_exit,
-    report_only_count_on_exit,
-    ignore
-} handling_method { HandlingMethod::except };
-
 std::vector<std::string> error_messages {};
 uint64_t error_count { 0 };
 
@@ -80,19 +72,19 @@ uint64_t error_count { 0 };
 
 void error(std::string const& msg)
 {
-    switch (handling_method)
+    switch (config::error_handling_method)
     {
-        case HandlingMethod::except: throw std::runtime_error(msg);
-        case HandlingMethod::report:
+        case config::ErrorHandlingMethod::except: throw std::runtime_error(msg);
+        case config::ErrorHandlingMethod::report:
             ++error_count;
             fmt::print(stderr, "Error: \"{}\". Proceeding...\n", msg);
             break;
-        case HandlingMethod::report_on_exit:
+        case config::ErrorHandlingMethod::report_on_exit:
             ++error_count;
             error_messages.push_back(msg + '\n');
             break;
-        case HandlingMethod::report_only_count_on_exit: ++error_count; break;
-        case HandlingMethod::ignore: break;
+        case config::ErrorHandlingMethod::report_only_count_on_exit: ++error_count; break;
+        case config::ErrorHandlingMethod::ignore: break;
     }
 }
 
@@ -109,11 +101,11 @@ int on_exit()
 {
     if (error_count)
     {
-        if (handling_method == HandlingMethod::report_only_count_on_exit
-            || handling_method == HandlingMethod::report_on_exit)
+        if (config::error_handling_method == config::ErrorHandlingMethod::report_only_count_on_exit
+            || config::error_handling_method == config::ErrorHandlingMethod::report_on_exit)
             fmt::print(stderr, "{} errors reported.\n", error_count);
 
-        if (handling_method == HandlingMethod::report_on_exit)
+        if (config::error_handling_method == config::ErrorHandlingMethod::report_on_exit)
         {
             fmt::print(stderr, "Reported errors:\n");
             for (auto const& msg : error_messages)
