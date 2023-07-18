@@ -19,4 +19,5 @@ There are 5 modes of error handling that can be set with the `--error` (`-e` for
 - `report_on_exit` reports all errors on exit (to `stderr`), not when they are detected
 - `report_only_count_on_exit` reports only the number of error on exit (to `stderr`)
 - `ignore` ignores all errors
+
 In all modes, except `ignore`, if any error is detected, the exit code is set to 1;
