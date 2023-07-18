@@ -17,7 +17,12 @@ class MorseTable
 public:
     void read_from_file(std::string const& filename)
     {
+        util::verbose_print(fmt::format("Reading morse file \"{}\"...\n", filename));
+
         std::ifstream file { filename };
+
+        if (file.bad() || !file.is_open())
+            error::error(fmt::format("Could not load morse file \"{}\"", filename));
 
         for (UnicodeString normal, morse; file >> normal >> morse;)
         {

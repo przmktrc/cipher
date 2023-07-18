@@ -59,6 +59,15 @@ void for_each_split(UnicodeString const& str, UChar32 delim, auto&& func)
     }
     if (!segment.isEmpty()) func(segment);
 }
+
+
+
+bool verbose_print(std::string const& msg)
+{
+    if (config::verbose) fmt::print("{}", msg);
+
+    return config::verbose;
+}
 }
 
 
