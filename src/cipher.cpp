@@ -17,7 +17,14 @@ void prepare_for_selected_mode()
 
     if (config::operating_mode == config::OperatingMode::from_morse
         | config::operating_mode == config::OperatingMode::to_morse)
+    {
         cipher::morse_table.read_from_file("morsefile.txt");
+
+        if (config::operating_mode == config::OperatingMode::from_morse)
+            cipher::morse_table.sort_for_from();
+        else
+            cipher::morse_table.sort_for_to();
+    }
 }
 
 

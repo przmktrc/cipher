@@ -90,8 +90,6 @@ UnicodeString to_morse(UnicodeString msg)
 
     UnicodeString res;
 
-    morse_table.sort_for_to();
-
     util::for_each_char32(
         msg,
         [&res](UChar32 ch) -> void
@@ -126,8 +124,6 @@ UnicodeString from_morse(UnicodeString msg)
     msg.trim();
 
     UnicodeString res;
-
-    morse_table.sort_for_from();
 
     util::for_each_split(msg,
                          '/',
