@@ -9,7 +9,7 @@ A simple ciphering program. **Supports Unicode characters**
 ## Ciphers
 ### Morse code
 Used by adding `--from-morse` or `--to-morse` option. \
-Morse exchange table is read from [morsefile.txt](./morsefile.txt), you may easily append your own exchange pairs.
+Morse exchange table is read from [morsefile.txt](./morsefile.txt), you may easily append your own exchange pairs, add your own morsefiles with the `--morsefile` option, or disable the default morsefile with `--morsefile nodefault`.
 
 
 ## Error handling
