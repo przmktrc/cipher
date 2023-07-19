@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdexcept>
+#include <vector>
 
 #include "cli.hpp"
 
@@ -26,6 +27,9 @@ enum class OperatingMode
 
 bool verbose { false };
 
+std::string default_morsefile { "morsefile.txt" };
+std::vector<std::string> additional_morsefiles {};
+
 
 
 void set_error_handling(std::vector<std::string>::iterator& it)
@@ -48,6 +52,16 @@ void set_error_handling(std::vector<std::string>::iterator& it)
 }
 
 
+void add_morsefile_handler(std::vector<std::string>::iterator& it)
+{
+    ++it;
+
+    if (*it == "nodefault")
+        default_morsefile.clear();
+    else
+        additional_morsefiles.push_back(*it);
+}
+
 
 cipher::cli::Parser get_parser()
 {
@@ -57,7 +71,8 @@ cipher::cli::Parser get_parser()
         .add_handler("--to-morse", [](auto& it) { operating_mode = OperatingMode::to_morse; })
         .add_handler(std::vector { "--on-error", "-e" }, set_error_handling)
         .add_handler(std::vector { "--verbose", "-v" },
-                     cipher::cli::handlers::flag_handler(verbose));
+                     cipher::cli::handlers::flag_handler(verbose))
+        .add_handler("--morsefile", add_morsefile_handler);
 
     return parser;
 }

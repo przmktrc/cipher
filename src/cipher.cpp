@@ -12,18 +12,34 @@ using namespace cipher;
 
 void prepare_for_selected_mode()
 {
-    if (config::operating_mode == config::OperatingMode::unknown)
-        cipher::error::error_except("Mode not specified");
-
-    if (config::operating_mode == config::OperatingMode::from_morse
-        | config::operating_mode == config::OperatingMode::to_morse)
+    switch (config::operating_mode)
     {
-        cipher::morse_table.read_from_file("morsefile.txt");
+        case config::OperatingMode::from_morse: [[fallthrough]];
+        case config::OperatingMode::to_morse:
+            if (!config::default_morsefile.empty())
+                cipher::morse_table.read_from_file(config::default_morsefile);
+            else if (config::additional_morsefiles.empty())
+                error::error("Default morsefile disabled and no additional ones specified");
 
-        if (config::operating_mode == config::OperatingMode::from_morse)
-            cipher::morse_table.sort_for_from();
-        else
-            cipher::morse_table.sort_for_to();
+            for (auto const& morsefile : config::additional_morsefiles)
+                cipher::morse_table.read_from_file(morsefile);
+
+            if (config::operating_mode == config::OperatingMode::from_morse)
+            {
+                util::verbose_print("Translating morse to normal...\n");
+                cipher::morse_table.sort_for_from();
+            }
+            else
+            {
+                util::verbose_print("Translating normal to morse...\n");
+                cipher::morse_table.sort_for_to();
+            }
+
+            break;
+        case config::OperatingMode::unknown: error::error_except("Mode not specified");
+        default:
+            error::error_except(
+                fmt::format("This mode is not handled in prepare_for_selected_mode()"));
     }
 }
 
@@ -35,9 +51,9 @@ void run_line_by_line()
     while (std::getline(std::cin, line))
     {
         if (config::operating_mode == config::OperatingMode::to_morse)
-            fmt::print("to_morse: \"{}\"\n", to_morse(UnicodeString::fromUTF8(line)));
+            fmt::print("{}\n", to_morse(UnicodeString::fromUTF8(line)));
         else if (config::operating_mode == config::OperatingMode::from_morse)
-            fmt::print("from_morse: \"{}\"\n", from_morse(UnicodeString::fromUTF8(line)));
+            fmt::print("{}\n", from_morse(UnicodeString::fromUTF8(line)));
     }
 }
 
