@@ -88,7 +88,7 @@ void set_caesar_handler(std::vector<std::string>::iterator& it)
 
 void set_caesar_alphabet_handler(std::vector<std::string>::iterator& it)
 {
-    caesar_alphabet = UnicodeString::fromUTF8(*(++it));
+    caesar_alphabet = UnicodeString::fromUTF8(*(++it)).toLower();
 }
 
 
