@@ -47,10 +47,6 @@ void prepare_for_exchange()
 
 void prepare_for_caesar()
 {
-    if (config::read_caesar_alphabet_from_file)
-        config::caesar_alphabet
-            = cipher::read_caesar_alphabet_file(util::to_string(config::caesar_alphabet));
-
     util::verbose_print(fmt::format("Running Caesar's cipher with shift {}, alphabet \"{}\"...\n",
                                     config::caesar_shift,
                                     config::caesar_alphabet));

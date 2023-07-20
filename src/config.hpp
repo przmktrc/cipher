@@ -37,7 +37,6 @@ std::vector<std::string> additional_morsefiles {};
 UnicodeString exchange_keyphrase {};
 
 int caesar_shift { 0 };
-bool read_caesar_alphabet_from_file { false };
 UnicodeString caesar_alphabet { "abcdefghijklmnopqrstuvwxyz" };
 
 
@@ -89,15 +88,7 @@ void set_caesar_handler(std::vector<std::string>::iterator& it)
 
 void set_caesar_alphabet_handler(std::vector<std::string>::iterator& it)
 {
-    ++it;
-
-    if (*it == "file")
-    {
-        read_caesar_alphabet_from_file = true;
-        ++it;
-    }
-
-    caesar_alphabet = UnicodeString::fromUTF8(*it);
+    caesar_alphabet = UnicodeString::fromUTF8(*(++it));
 }
 
 

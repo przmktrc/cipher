@@ -12,39 +12,6 @@
 
 namespace cipher
 {
-UnicodeString read_caesar_alphabet_file(std::string const& filename)
-{
-    util::verbose_print(
-        fmt::format("Reading Caesar's cipher alphabet from file \"{}\"...\n", filename));
-
-    UnicodeString res;
-    std::ifstream file { filename };
-
-    if (file.bad() || !file.is_open())
-    {
-        error::error(
-            fmt::format("Couldn't read Caesar's cipher alphabet from file \"{}\"", filename));
-        return config::caesar_alphabet;
-    }
-
-    file >> res;
-
-    if (res.isEmpty())
-    {
-        if (config::error_handling_method == config::ErrorHandlingMethod::except)
-            error::error(fmt::format("Alphabet read from file \"{}\" is empty", filename));
-        else
-            error::error(fmt::format(
-                "Alphabet read from file \"{}\" is empty. Proceeding with the default alphabet",
-                filename));
-        return config::caesar_alphabet;
-    }
-
-    return res;
-}
-
-
-
 UChar32 caesar_letter(UChar32 ch)
 {
     int64_t idx { static_cast<int64_t>(util::find_char_position(config::caesar_alphabet, ch)) };
