@@ -38,6 +38,12 @@ Since the exchange cipher is symetrical, if we encrypt that encrypted message ag
 
 </details>
 
+### Caesar's cipher
+Used by specifying `--caesar <shift>`, `shift` may be positive or negative.
+
+You may specify your own alphabet with `--caesar-alphabet <alphabet>`, or `--caesar-alphabet file <filename>` to read it from a file. By default it uses the standard 26-character English alphabet. Characters in the message that do not occur in the alphabet are left unchanged.
+
+
 
 ## Error handling
 There are 5 modes of error handling that can be set with the `--error` (`-e` for short) option:

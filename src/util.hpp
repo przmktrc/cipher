@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <stdexcept>
+#include <unicode/umachine.h>
 #include <vector>
 
 #include "config.hpp"
@@ -88,6 +89,29 @@ UChar32 tolower(UChar32 ch)
 UChar32 toupper(UChar32 ch)
 {
     return UnicodeString(ch).toUpper().char32At(0);
+}
+
+
+
+std::string to_string(UnicodeString const& str)
+{
+    std::string res;
+
+    str.toUTF8String(res);
+
+    return res;
+}
+
+
+
+uint64_t find_char_position(UnicodeString const& str, UChar32 ch)
+{
+    for (uint64_t i { 0 }; i < str.countChar32(); ++i)
+    {
+        if (str.char32At(i) == ch) return i;
+    }
+
+    return str.countChar32();
 }
 }
 

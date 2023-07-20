@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 #include "cli.hpp"
@@ -24,7 +25,8 @@ enum class OperatingMode
     unknown,
     from_morse,
     to_morse,
-    exchange
+    exchange,
+    caesar
 } operating_mode { OperatingMode::unknown };
 
 bool verbose { false };
@@ -33,6 +35,10 @@ std::string default_morsefile { "morsefile.txt" };
 std::vector<std::string> additional_morsefiles {};
 
 UnicodeString exchange_keyphrase {};
+
+int caesar_shift { 0 };
+bool read_caesar_alphabet_from_file { false };
+UnicodeString caesar_alphabet { "abcdefghijklmnopqrstuvwxyz" };
 
 
 
@@ -74,17 +80,40 @@ void set_exchange_handler(std::vector<std::string>::iterator& it)
 }
 
 
+void set_caesar_handler(std::vector<std::string>::iterator& it)
+{
+    operating_mode = OperatingMode::caesar;
+    caesar_shift = std::stoi(*(++it));
+}
+
+
+void set_caesar_alphabet_handler(std::vector<std::string>::iterator& it)
+{
+    ++it;
+
+    if (*it == "file")
+    {
+        read_caesar_alphabet_from_file = true;
+        ++it;
+    }
+
+    caesar_alphabet = UnicodeString::fromUTF8(*it);
+}
+
+
 cipher::cli::Parser get_parser()
 {
     cipher::cli::Parser parser {};
-    parser.set_default_handler(cipher::cli::handlers::report_unknown_default_handler)
+    parser.set_default_handler(cli::handlers::report_unknown_default_handler)
         .add_handler("--from-morse", [](auto& it) { operating_mode = OperatingMode::from_morse; })
         .add_handler("--to-morse", [](auto& it) { operating_mode = OperatingMode::to_morse; })
         .add_handler("--exchange", set_exchange_handler)
         .add_handler(std::vector { "--on-error", "-e" }, set_error_handling)
         .add_handler(std::vector { "--verbose", "-v" },
                      cipher::cli::handlers::flag_handler(verbose))
-        .add_handler("--morsefile", add_morsefile_handler);
+        .add_handler("--morsefile", add_morsefile_handler)
+        .add_handler("--caesar", set_caesar_handler)
+        .add_handler("--caesar-alphabet", set_caesar_alphabet_handler);
 
     return parser;
 }
