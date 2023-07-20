@@ -32,7 +32,7 @@ The exchange pairs would be: a-b, c-d, e-f.
 
 The message "This is a secret message" would get translated to "This is b sfdrft mfssbgf".
 
-Since the exchange cipher is symetrical, if we encrypt that encrypted message again, we'll get the original "This is a secret
+Since the exchange cipher is symetrical, if we encrypt that encrypted message again, we'll get the original "This is a secret message".
 
 ---
 
