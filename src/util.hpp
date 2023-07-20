@@ -68,6 +68,27 @@ bool verbose_print(std::string const& msg)
 
     return config::verbose;
 }
+
+
+
+bool isupper(UChar32 ch)
+{
+    return UnicodeString(ch) == UnicodeString(ch).toUpper();
+}
+
+
+
+UChar32 tolower(UChar32 ch)
+{
+    return UnicodeString(ch).toLower().char32At(0);
+}
+
+
+
+UChar32 toupper(UChar32 ch)
+{
+    return UnicodeString(ch).toUpper().char32At(0);
+}
 }
 
 

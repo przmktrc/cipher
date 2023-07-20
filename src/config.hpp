@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "cli.hpp"
+#include "icu.hpp"
 
 
 
@@ -22,13 +23,16 @@ enum class OperatingMode
 {
     unknown,
     from_morse,
-    to_morse
+    to_morse,
+    exchange
 } operating_mode { OperatingMode::unknown };
 
 bool verbose { false };
 
 std::string default_morsefile { "morsefile.txt" };
 std::vector<std::string> additional_morsefiles {};
+
+UnicodeString exchange_keyphrase {};
 
 
 
@@ -63,12 +67,20 @@ void add_morsefile_handler(std::vector<std::string>::iterator& it)
 }
 
 
+void set_exchange_handler(std::vector<std::string>::iterator& it)
+{
+    operating_mode = OperatingMode::exchange;
+    exchange_keyphrase = UnicodeString::fromUTF8(*(++it));
+}
+
+
 cipher::cli::Parser get_parser()
 {
     cipher::cli::Parser parser {};
     parser.set_default_handler(cipher::cli::handlers::report_unknown_default_handler)
         .add_handler("--from-morse", [](auto& it) { operating_mode = OperatingMode::from_morse; })
         .add_handler("--to-morse", [](auto& it) { operating_mode = OperatingMode::to_morse; })
+        .add_handler("--exchange", set_exchange_handler)
         .add_handler(std::vector { "--on-error", "-e" }, set_error_handling)
         .add_handler(std::vector { "--verbose", "-v" },
                      cipher::cli::handlers::flag_handler(verbose))
