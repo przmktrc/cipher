@@ -33,6 +33,15 @@ UChar32 caesar_letter(UChar32 ch)
 
 
 
+void prepare_for_caesar()
+{
+    util::verbose_print(fmt::format("Running Caesar's cipher with shift {}, alphabet \"{}\"...\n",
+                                    config::caesar_shift,
+                                    config::caesar_alphabet));
+}
+
+
+
 UnicodeString caesar(UnicodeString msg)
 {
     msg.trim();

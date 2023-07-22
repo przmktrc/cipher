@@ -83,6 +83,30 @@ private:
 
 
 
+void prepare_for_morse()
+{
+    if (!config::default_morsefile.empty())
+        cipher::morse_table.read_from_file(config::default_morsefile);
+    else if (config::additional_morsefiles.empty())
+        error::error("Default morsefile disabled and no additional ones specified");
+
+    for (auto const& morsefile : config::additional_morsefiles)
+        cipher::morse_table.read_from_file(morsefile);
+
+    if (config::operating_mode == config::OperatingMode::from_morse)
+    {
+        util::verbose_print("Translating morse to normal...\n");
+        cipher::morse_table.sort_for_from();
+    }
+    else
+    {
+        util::verbose_print("Translating normal to morse...\n");
+        cipher::morse_table.sort_for_to();
+    }
+}
+
+
+
 UnicodeString to_morse(UnicodeString msg)
 {
     msg.toLower();

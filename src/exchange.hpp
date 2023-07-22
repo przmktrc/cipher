@@ -74,6 +74,15 @@ private:
 
 
 
+void prepare_for_exchange()
+{
+    cipher::exchange_table.set_keyphrase(config::exchange_keyphrase);
+    util::verbose_print(fmt::format("Running exchange cipher with keyphrase \"{}\"...\n",
+                                    config::exchange_keyphrase));
+}
+
+
+
 UnicodeString exchange(UnicodeString msg)
 {
     msg.trim();
