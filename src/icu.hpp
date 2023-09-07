@@ -20,8 +20,8 @@ struct fmt::formatter<UnicodeString>
 {
     constexpr auto parse(format_parse_context& ctx) -> format_parse_context::iterator
     {
-        if (ctx.begin() != ctx.end())
-            ctx.on_error("UnicodeString does not take any format specifiers.");
+        if (ctx.begin() != ctx.end() && *(ctx.begin()) != '}')
+            throw_format_error("UnicodeString does not take any format specifiers.");
         return ctx.end();
     }
 
